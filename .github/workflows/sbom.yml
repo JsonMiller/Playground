@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5.4.0
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -39,11 +39,11 @@ jobs:
 
       - name: Create SBOM Update pull request
         if: steps.sbom-diff.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8.1.1
         with:
           commit-message: "chore(sbom): update main SBOM"
           branch: chore/sbom-main
-          delete-branch: false
+          delete-branch: true
           title: "chore(sbom): update main SBOM"
           body: |
             This pull request updates the main SBOM generated from the latest push to main.
