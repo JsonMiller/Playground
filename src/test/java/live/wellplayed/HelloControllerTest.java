@@ -47,6 +47,6 @@ public class HelloControllerTest {
 
     @Test
     public void testNothing() {
-        System.out.println("Everything");
+        System.out.println("The thing");
     }
 }
