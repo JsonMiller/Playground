@@ -44,4 +44,9 @@ public class HelloControllerTest {
                 .body("right", is(200))
                 .body("answer", is(300));
     }
+
+    @Test
+    public void testNothing() {
+        System.out.println("Nothing");
+    }
 }
