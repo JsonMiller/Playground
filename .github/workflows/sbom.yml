@@ -30,17 +30,15 @@ jobs:
       - name: Store SBOM in repository path
         run: |
           mkdir -p sbom
-          cp target/bom.json sbom/bom.json
+          jq 'del(.metadata.timestamp)' target/bom.json > sbom/bom.json
 
-      - name: Upload SBOM as workflow artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sbom-main-${{ github.run_number }}.json
-          path: sbom/bom.json
-          if-no-files-found: error
-          retention-days: 30
+      - name: Check for meaningful SBOM changes
+        id: sbom-diff
+        run: |
+          git diff --quiet sbom/bom.json && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
 
       - name: Create SBOM Update pull request
+        if: steps.sbom-diff.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
           commit-message: "chore(sbom): update main SBOM"
